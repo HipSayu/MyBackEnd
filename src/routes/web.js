@@ -1,4 +1,5 @@
 import express from 'express'
+import homeController from "../controller/homeController"
 
 const router = express.Router()
 /**
@@ -6,10 +7,13 @@ const router = express.Router()
  * @param {*} app express app
  * @returns 
  */
+
+
 const initWebRoutes = (app) => {
-    router.get('/', (req, res) => {
-        return res.send('HipDz')
-    })
+    
+    //path, handler
+    router.get('/', homeController.handleHelloWord);
+    router.get('/account/Create', homeController.handleAccountCreate);
 
     return app.use('/', router)
 }
