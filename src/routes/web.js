@@ -10,11 +10,11 @@ const router = express.Router()
 
 
 const initWebRoutes = (app) => {
-    
+     
     //path, handler
     router.get('/', homeController.handleHelloWord);
-    router.get('/account/Create', homeController.handleAccountCreate);
-
+    router.get('/Account/Create', homeController.handleAccountCreatePage);
+    router.post('/Account/AccountCreate', homeController.handleCreateNewAccount)
     return app.use('/', router)
 }
 export default initWebRoutes;
