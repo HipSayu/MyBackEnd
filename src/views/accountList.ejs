@@ -30,7 +30,9 @@
             <td>
 
               <button type="button" class="btn btn-warning">Edit</button>
-              <button type="button" class="btn btn-danger">Delete</button>
+              <form action="/Account/Delete/<%=item.UserName%>" method="POST">
+                <button type="submit" class="btn btn-danger">Delete</button>
+              </form>
             </td>
           </tr>
         <% }) %>

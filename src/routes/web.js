@@ -14,9 +14,9 @@ const initWebRoutes = (app) => {
     //path, handler
     router.get('/', homeController.handleHelloWord);
     router.get('/Account/Create', homeController.handleAccountCreatePage);
-    router.get('/AccountList', homeController.handleAccountList);
-    router.post('/Account/AccountCreate', homeController.handleCreateNewAccount)
-
+    router.get('/Account/List', homeController.handleAccountList);
+    router.post('/Account/List', homeController.handleCreateNewAccount)
+    router.post('/Account/Delete/:username', homeController.handleDeleteAccount)
     return app.use('/', router)
 }
 export default initWebRoutes;

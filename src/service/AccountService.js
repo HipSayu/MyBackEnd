@@ -10,17 +10,30 @@ const hashPassword = (userPassword) => {
     let  hashPassword = bcrypt.hashSync(userPassword, salt);
     return hashPassword
 }
-const CreateNewAccount = (Email, Password, UserName) =>{
-    let hashPass= hashPassword(Password)
 
-    connection.query(
-        'INSERT INTO account (Email, Password, Username) VALUES (?, ?, ?) ',[Email, hashPass, UserName],
-        function (err, results, fields){
-            if (err){
-                console.log(err)
+const CreateNewAccount = async (Email, Password, UserName) =>{
+        //create the connection to dababase
+        const connection = await mysql.createConnection(
+            {
+                host:'localhost', 
+                user : 'root', 
+                database : 'hipdzvaolol', 
+                Promise : bluebird
             }
-        }
-    );
+        );
+    //hass password
+    let hashPass= hashPassword(Password)
+    
+    //Insert
+    try {
+        const [rows, fields] = await connection.execute(
+                'INSERT INTO account (Email, Password, Username) VALUES (?, ?, ?)',
+                [Email, hashPass, UserName]
+            );
+        return rows;
+    } catch (error) {
+        console.log('check error', error)
+    }
 }
 
 const getListAccount = async () => {
@@ -41,9 +54,35 @@ const getListAccount = async () => {
         console.log('check error', error)
     }
    
-        
+
 }
+
+
+const DeleteAccount = async (UserName) =>{
+        //create the connection to dababase
+        const connection = await mysql.createConnection(
+            {
+                host:'localhost', 
+                user : 'root', 
+                database : 'hipdzvaolol', 
+                Promise : bluebird
+            }
+        );
+        //DELETE
+        try {   
+            const [rows, fields] = await connection.execute(
+                    'DELETE FROM account WHERE UserName = ?',
+                    [UserName]
+                );
+            return rows;
+        } catch (error) {
+            console.log('check error', error)
+        }
+}
+
+
 module.exports = {
     CreateNewAccount,
-    getListAccount
+    getListAccount,
+    DeleteAccount
 }
