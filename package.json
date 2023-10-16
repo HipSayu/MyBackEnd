@@ -21,6 +21,7 @@
     "nodemon": "^3.0.1"
   },
   "dependencies": {
+    "bluebird": "^3.7.2",
     "mysql2": "^3.6.2"
   }
 }

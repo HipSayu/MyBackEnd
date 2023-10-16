@@ -1,15 +1,11 @@
-import mysql from 'mysql2';
+import mysql from 'mysql2/promise';
 import bcrypt from 'bcrypt';
+import bluebird from 'bluebird';
 
-//create the connection to dababase
-const connection = mysql.createConnection({
-    host: 'localhost',
-    user : 'root',
-    database : 'hipdzvaolol'
-});
+
+
 
 const salt = bcrypt.genSaltSync(10);
-
 const hashPassword = (userPassword) => {
     let  hashPassword = bcrypt.hashSync(userPassword, salt);
     return hashPassword
@@ -27,17 +23,23 @@ const CreateNewAccount = (Email, Password, UserName) =>{
     );
 }
 
-const getListAccount = () => {
-    let userList = []
-    connection.query(
-        'SELECT * FROM account',
-        function(err, results, fields){
-            if (err){
-                console.log(err)
-            }
-            console.log('check userlist: ', results)
+const getListAccount = async () => {
+    //create the connection to dababase
+    const connection = await mysql.createConnection(
+        {
+            host:'localhost', 
+            user : 'root', 
+            database : 'hipdzvaolol', 
+            Promise : bluebird
         }
-    )
+    );
+
+    try {
+        const [rows, fields] = await connection.execute('SELECT * FROM account');
+        return rows;
+    } catch (error) {
+        console.log('check error', error)
+    }
    
         
 }
