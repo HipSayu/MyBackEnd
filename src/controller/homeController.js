@@ -15,8 +15,9 @@ const handleCreateNewAccount = async (req, res) => {
     let UserName = req.body.UserName;
     let Password = req.body.Password;
     await AccountService.CreateNewAccount(Email, Password, UserName)
-    let AccountList = await AccountService.getListAccount();
-    return res.render('accountList.ejs', {AccountList})
+    // let AccountList = await AccountService.getListAccount();
+    // return res.render('accountList.ejs', {AccountList})
+    res.redirect('/Account/List')
 }
 
 
@@ -24,9 +25,31 @@ const handleAccountList = async (req, res) => {
     let AccountList = await AccountService.getListAccount();
     return res.render('accountList.ejs', {AccountList})
 }
+
+
 const handleDeleteAccount = async (req, res) => {
-    await AccountService.DeleteAccount(req.params.username)
+    await AccountService.DeleteAccount(req.params.id)
     res.redirect('/Account/List')
+}
+const handleUpdateAccountPage = async (req, res) => {
+    let ID = req.params.id
+    let Account = await AccountService.GetAccountByID(ID)
+    let AccountData = {}
+    AccountData = Account ;
+    // if (Account && Account.length > 0) {
+    //     AccountData = Account[0]
+    // }
+    return res.render('accountUpdate.ejs', {AccountData})
+}
+const handleUpdateAccount = async (req, res) => {
+    let ID = req.body.id;
+    let UserName = req.body.UserName;
+    let Email = req.body.Email;
+    let Password = req.body.Password;
+    console.log('check: ' , ID)
+    await AccountService.UpdateAccountInfor(UserName, Email, Password, ID)
+    res.redirect('/Account/List')
+
 }
 
 module.exports = {
@@ -34,5 +57,7 @@ module.exports = {
     handleAccountCreatePage,
     handleCreateNewAccount,
     handleAccountList,
-    handleDeleteAccount
+    handleDeleteAccount,
+    handleUpdateAccountPage,
+    handleUpdateAccount
 }
